@@ -120,7 +120,7 @@ public abstract class OtrsDS extends DSHandler {
 						this.getFieldValue(this.getIDName()));
 				Map<String, Object> data = new SimpleSoapMessageParser()
 						.nodesToMap(this.dispatchCall(
-								this.getClass(this), this.getClassMethod(),
+								this.getClass(this), this.getClassMethod("get"),
 								params));
 				this.prefill(data);
 			} else {
@@ -163,7 +163,7 @@ public abstract class OtrsDS extends DSHandler {
 	
 	public boolean create() throws SOAPException, IOException, NoConnectionException{
 		Map<String, Object> params = this.getAllCreate();
-		List<?> id = new SimpleSoapMessageParser().nodesToList(this.dispatchCall(this.getClass(this), "TicketCreate", params));
+		List<?> id = new SimpleSoapMessageParser().nodesToList(this.dispatchCall(this.getClass(this), this.getClassMethod("create"), params));
 		if(id.size() == 1){
 			this.setID(id.get(0));
 			return true;

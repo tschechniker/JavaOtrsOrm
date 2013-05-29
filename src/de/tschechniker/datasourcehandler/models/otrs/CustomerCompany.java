@@ -19,7 +19,7 @@ import de.tschechniker.datasourcehandler.resources.OtrsDS;
 import de.tudan.otrsclient.SimpleSoapMessageParser;
 
 @Class("CustomerCompanyObject")
-@Method("CustomerCompanyGet")
+@Method(get="CustomerCompanyGet",create="",delete="",update="")
 public class CustomerCompany extends OtrsDS {	
 	@Override
 	public String toString() {

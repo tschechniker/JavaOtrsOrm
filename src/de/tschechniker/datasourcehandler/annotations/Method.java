@@ -8,5 +8,8 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Method {
-	String value();
+	String create();
+	String delete();
+	String get();
+	String update();
 }

@@ -1,9 +1,11 @@
 package de.tschechniker.datasourcehandler;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.tschechniker.datasourcehandler.annotations.Method;
 import de.tschechniker.datasourcehandler.exceptions.IdNotInizializedException;
 import de.tschechniker.datasourcehandler.exceptions.NoConnectionException;
 
@@ -72,17 +74,23 @@ public abstract class DSHandler {
 
 	}
 
-	protected String getClassMethod() {
+	protected String getClassMethod(String method) {
 		if (this.getClass().isAnnotationPresent(
 				de.tschechniker.datasourcehandler.annotations.Method.class)) {
-			return this
-					.getClass()
-					.getAnnotation(
-							de.tschechniker.datasourcehandler.annotations.Method.class)
-					.value();
-		} else {
-			return null;
+			Method anno = this.getClass().getAnnotation(
+					de.tschechniker.datasourcehandler.annotations.Method.class);
+			switch (method) {
+			case "create":
+				return anno.create();
+			case "delete":
+				return anno.delete();
+			case "update":
+				return anno.update();
+			case "get":
+				return anno.get();
+			}
 		}
+		return null;
 	}
 
 	protected String getClass(Object obj) {
@@ -132,13 +140,17 @@ public abstract class DSHandler {
 		}
 		return null;
 	}
-	
-	public Map<String, Object> getAllCreate(){
+
+	public Map<String, Object> getAllCreate() {
 		Map<String, Object> fields = new HashMap<String, Object>();
 		for (Field field : this.getClass().getDeclaredFields()) {
-				if (field.isAnnotationPresent(de.tschechniker.datasourcehandler.annotations.Create.class)) {
-					fields.put(field.getAnnotation(de.tschechniker.datasourcehandler.annotations.Create.class).value(), this.getFieldValue(field.getName()));
-				}
+			if (field
+					.isAnnotationPresent(de.tschechniker.datasourcehandler.annotations.Create.class)) {
+				fields.put(
+						field.getAnnotation(
+								de.tschechniker.datasourcehandler.annotations.Create.class)
+								.value(), this.getFieldValue(field.getName()));
+			}
 		}
 		return fields;
 	}

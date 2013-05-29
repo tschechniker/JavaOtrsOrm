@@ -13,7 +13,7 @@ import de.tschechniker.datasourcehandler.exceptions.NoConnectionException;
 import de.tschechniker.datasourcehandler.resources.OtrsDS;
 
 @Class("CustomerUserObject")
-@Method("CustomerUserDataGet")
+@Method(get="CustomerUserDataGet",update="",delete="",create="")
 public class CustomerUser extends OtrsDS{
 	
 	@Id

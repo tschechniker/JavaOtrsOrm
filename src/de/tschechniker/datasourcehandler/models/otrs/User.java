@@ -18,7 +18,7 @@ import de.tschechniker.datasourcehandler.resources.OtrsDS;
 import de.tudan.otrsclient.SimpleSoapMessageParser;
 
 @Class("UserObject")
-@Method("GetUserData")
+@Method(get="GetUserData",create="",delete="",update="UserUpdate")
 public class User extends OtrsDS{
 	
 	public User() throws NoConnectionException {

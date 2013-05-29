@@ -11,6 +11,7 @@ import javax.xml.soap.SOAPException;
 
 import de.tschechniker.datasourcehandler.annotations.Class;
 import de.tschechniker.datasourcehandler.annotations.Create;
+import de.tschechniker.datasourcehandler.annotations.Delete;
 import de.tschechniker.datasourcehandler.annotations.Id;
 import de.tschechniker.datasourcehandler.annotations.MappedBy;
 import de.tschechniker.datasourcehandler.annotations.Method;
@@ -20,37 +21,49 @@ import de.tschechniker.datasourcehandler.resources.OtrsDS;
 import de.tudan.otrsclient.SimpleSoapMessageParser;
 
 @Class("TicketObject")
-@Method("TicketGet")
+@Method(get="TicketGet", create="TicketCreate", delete="TicketDelete", update="")
 public class Ticket extends OtrsDS {
 	@Id
 	@MappedBy("TicketID")
+	@Delete("TicketID")
 	private int id;
+
 	@MappedBy("Queue")
 	@Create("Queue")
 	private String queue;
+
 	@MappedBy("StateID")
 	@Create("StateID")
 	private int stateID;
+
 	@Create("CustomerID")
 	@MappedBy("CustomerID")
 	private String customerID;
+
 	@MappedBy("OwnerID")
 	@Create("OwnerID")
 	private int ownerID;
+
 	@Create("CustomerUser")
 	@MappedBy("CustomerUserID")
 	private String customerUserID;
+
 	@MappedBy("Title")
 	@Create("Title")
 	private String title;
+
 	@MappedBy("Lock")
 	@Create("Lock")
 	private String lock;
+
 	@Create("Priority")
 	@MappedBy("Priority")
 	private String priority;
+
 	@Create("UserID")
+	@Delete("UserID")
 	private int UserID = 1;
+
 	private Map<String, Object> dynamicFields;
 
 	public Ticket() {
@@ -172,7 +185,7 @@ public class Ticket extends OtrsDS {
 
 			Map<String, Object> data = new SimpleSoapMessageParser()
 					.nodesToMap(this.dispatchCall(this.getClass(this),
-							this.getClassMethod(), params));
+							this.getClassMethod("get"), params));
 			for (Entry<String, Object> entry : data.entrySet()) {
 				if (entry.getKey().startsWith("DynamicField_")) {
 					String DynamicFieldName = entry.getKey().replace(
@@ -199,15 +212,15 @@ public class Ticket extends OtrsDS {
 	public void unlock() {
 		this.lock = "unlock";
 	}
-	
-	public boolean isLocked(){
-		if(this.lock.equals("lock")){
+
+	public boolean isLocked() {
+		if (this.lock.equals("lock")) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Ticket [id=" + id + ", queue=" + queue + ", stateID=" + stateID
